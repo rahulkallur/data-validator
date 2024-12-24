@@ -1,0 +1,1 @@
+docker buildx build --platform linux/amd64 --no-cache --tag rahulkallur/data-validator:1.0.0 --push .

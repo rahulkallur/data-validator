@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Decryption</title>
+</head>
+<body>
+  <h1>Decrypt Text</h1>
+  <form id="decryptForm">
+    <label for="encryptedText">Encrypted Text:</label>
+    <input type="text" id="encryptedText" name="encryptedText" required />
+    <button type="submit">Decrypt</button>
+  </form>
+  <h2>Decrypted Text:</h2>
+  <p id="output"></p>
+
+  <script>
+    document.getElementById('decryptForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const encryptedText = document.getElementById('encryptedText').value;
+
+      try {
+        const response = await fetch('/decrypt', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ encryptedText }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          document.getElementById('output').textContent = JSON.stringify(result.decryptedText.data);
+        } else {
+          document.getElementById('output').textContent = result.error || 'Error decrypting text.';
+        }
+      } catch (error) {
+        document.getElementById('output').textContent = 'Error: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
